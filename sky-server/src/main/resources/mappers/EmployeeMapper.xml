@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhChen.mapper.EmployeeMapper">
+
+    <insert id="save">
+<!--        创建的用户的参数传入什么-->
+        insert into employee value (#{id},#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser});
+    </insert>
+
+    <select id="findEmployeeByName" resultType="Employee">
+        select * from employee where username=#{name}
+    </select>
+</mapper>

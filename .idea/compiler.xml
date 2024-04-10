@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sky-common" />
-        <module name="sky-server" />
         <module name="sky-pojo" />
+        <module name="aop" />
+        <module name="sky-server" />
       </profile>
     </annotationProcessing>
   </component>

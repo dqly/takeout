@@ -1,7 +1,11 @@
 package com.lhChen.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lhChen.dto.EmployeeDTO;
+import com.lhChen.dto.EmployeeEditDTO;
 import com.lhChen.dto.EmployeeLoginDTO;
+import com.lhChen.dto.EmployeeQueryPageDTO;
 import com.lhChen.entity.Employee;
 import com.lhChen.mapper.EmployeeMapper;
 import com.lhChen.properities.JwtProperties;
@@ -17,6 +21,7 @@ import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.lhChen.interceptor.JwtTokenAdminInterceptor.threadLocal;
@@ -47,7 +52,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Result login(EmployeeLoginDTO employeeLoginDTO) {
        Employee employee=employeeMapper.findEmployeeByName(employeeLoginDTO.getUsername());
        if(employee.getUsername()!=null){
-           // 对密码进行编码
            String password = DigestUtils.md5DigestAsHex(employeeLoginDTO.getPassword().getBytes());
            if(employee.getPassword().equals(password)){
                Map<String, Object> claims = new HashMap<>();
@@ -67,5 +71,38 @@ public class EmployeeServiceImpl implements EmployeeService {
        }
     }
 
+    @Override
+    public Map<String ,Object> queryPages(EmployeeQueryPageDTO employeeQueryPageDTO){
+        PageHelper.startPage(employeeQueryPageDTO.getPage(), employeeQueryPageDTO.getPageSize());
+        List<Employee> l=employeeMapper.queryList();
+        PageInfo<Employee> pageInfo=new PageInfo<>(l);
+        List<Employee> l1=pageInfo.getList();
+        Long total=pageInfo.getTotal();
+        Map<String ,Object> map=new HashMap();
+        map.put("total",total);
+        map.put("records",l1);
+        return map;
+    };
 
+
+    public void banEmployee(int status,long id){
+        Employee employee=new Employee();
+        employee.setStatus(status);
+        employee.setId(id);
+        employeeMapper.update(employee);
+    };
+
+    public Employee findEmployeeById(int id){
+        Employee employee=employeeMapper.findEmployeeById(id);
+        employee.setPassword("******");
+        return employee;
+    };
+
+    public void edit(EmployeeEditDTO employeeEditDTO){
+        Employee employee=new Employee();
+        BeanUtils.copyProperties(employeeEditDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(threadLocal.get());
+        employeeMapper.update(employee);
+    };
 }

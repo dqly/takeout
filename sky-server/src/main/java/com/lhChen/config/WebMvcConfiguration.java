@@ -1,10 +1,13 @@
 package com.lhChen.config;
 
 import com.lhChen.interceptor.JwtTokenAdminInterceptor;
+import com.lhChen.json.JsonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -14,6 +17,8 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.List;
 
 @Slf4j
 @Configuration
@@ -27,6 +32,21 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/employee/login");
+    }
+
+    /**
+     * 扩展Spring MVC框架的消息转化器
+     * @param converters
+     */
+    //2 重写extendMessageConverters方法
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("扩展消息转换器...");
+        //2.1 创建一个消息转换器对象
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        //2.2 为消息转换器设置一个对象转换器
+        converter.setObjectMapper(new JsonObjectMapper());
+        //2.3 消息转化器加入容器中，并设置优先级为0(最优先)
+        converters.add(0,converter);
     }
 
     /**

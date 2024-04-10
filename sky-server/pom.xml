@@ -24,6 +24,18 @@
             <version>3.0.2</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>-->
+<!--            <version>4.1.0</version>-->
+<!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.11</version>
+        </dependency>
         <dependency>
             <groupId>com.lhChen</groupId>
             <artifactId>sky-pojo</artifactId>

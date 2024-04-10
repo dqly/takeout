@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /admin
 
@@ -20,14 +20,8 @@ mybatis:
     auto-mapping-behavior: full
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
-sky:
-  jwt:
-    # 设置jwt签名加密时使用的秘钥
-    admin-secret-key: itcast
-    # 设置jwt过期时间
-    admin-ttl: 7200000
-    # 设置前端传递过来的令牌名称
-    admin-token-name: token
 
-knife4j:
-  enable: true
+
+
+
+
